@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>One Music - Modern Music HTML5 Template</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+<div layout:fragment="content">
+
+
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="lds-.ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+        <div class="bradcumbContent">
+            <p>Look at My Music Lists</p>
+            <h2>PlayLists for '<span th:text="${#authentication.principal.username}"></span>'</h2>
+            <p></p>
+            <a href="#" data-toggle="modal" data-target="#createPlaylistModal">
+                <button type="button" class="btn btn-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-player-fill" viewBox="0 0 16 16">
+                        <path d="M8 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm1 2h6a1 1 0 0 1 1 1v2.5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm3 12a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                    </svg>
+                    PlayList 만들기
+                </button>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#deletePlaylistModal">
+                <button type="button" class="btn btn-gray">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-player-fill" viewBox="0 0 16 16">
+                        <path d="M8 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm1 2h6a1 1 0 0 1 1 1v2.5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm3 12a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                    </svg>
+                    PlayList 삭제하기
+                </button>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ##### Breadcumb Area End ##### -->
+
+
+    <!-- PlayList Start -->
+
+    <p></p>
+    <div>
+        <div class="row">
+            <div th:if="${playlists} != null" th:each="playlist : ${playlists}" class="col-12 col-lg-4">
+                <div class="my-playlist-area mb-100">
+                    <div class="section-heading text-left mb-50 wow fadeInUp" data-wow-delay="50ms">
+                        <p>PlayList Name</p>
+                        <h2><span th:text="${playlist.plName}"></span></h2>
+                    </div>
+
+                    <!-- Songs in PlayList Start-->
+                    <div class="single-new-item d-flex align-items-center justify-content-between wow fadeInUp" data-wow-delay="100ms" th:each="music : ${playlist.musics}">
+                        <div class="first-part d-flex align-items-center">
+                            <div class="thumbnail">
+                                <img th:src="${music.m_image}">
+                            </div>
+                            <div class="content-">
+                                <p><span th:text="${music.m_title}"></span></p>
+                                <p><span th:text="${music.m_artist}"></span></p>
+                            </div>
+                        </div>
+                        <audio preload="auto" controls>
+                            <source th:src="${music.m_sound}">
+                        </audio>
+                    </div>
+                    <!-- Songs in PlayList End-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- PlayList End -->
+
+    <!-- Create 모달 시작 -->
+    <div class="modal fade" id="createPlaylistModal" tabindex="-1" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createPlaylistModalLabel">PlayList 생성</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="createPlaylistForm">
+                        <div class="form-group">
+                            <label for="playlistName">PlayList 이름 : </label>
+                            <input type="text" class="form-control" id="playlistName" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="createPlaylistButton">생성</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Create 모달 끝 -->
+
+
+    <!-- Delete 모달 창 -->
+    <div class="modal fade" id="deletePlaylistModal" tabindex="-1" role="dialog" aria-labelledby="deletePlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletePlaylistModalLabel">삭제할 MyPlaylist 를 선택해 주세요</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Display failure message if ListPlaylist is null -->
+                    <div th:if="${failureMessage != null}" class="alert alert-danger mt-3">
+                        <p>기존 PlayList가 존재하지 않습니다.</p>
+                    </div>
+
+                    <!-- Display playlists if ListPlaylist is not null -->
+                    <div th:if="${failureMessage == null}">
+                        <div id="existingPlaylistOption" class="mt-3">
+                            <ul id="playlistList">
+                                <!-- 플레이리스트 아이템을 출력 -->
+                                <li th:each="playlist : ${playlists}">
+                                    <a th:href="@{/playlist/deletePlaylist(plno=${playlist.plNo})}">
+                                        <p>
+                                            <span id="existPlaylistNo" th:text="${playlist.plNo}"></span>
+                                            <span th:text="${playlist.plName}"></span>
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete 모달 끝 -->
+
+</div>
+
+
+<script layout:fragment="script" th:inline="javascript">
+
+    // PlayList 만들기 버튼 클릭시
+    $(document).ready(function() {
+        // 생성 버튼 클릭 시
+        $("#createPlaylistButton").click(function() {
+            var playlistName = $("#playlistName").val();
+
+            // AJAX 요청 보내기
+            $.ajax({
+                type: "POST",
+                url: "/playlist/add", // 실제 요청을 처리하는 URL로 변경
+                data: { plName: playlistName }, // 'plName' 파라미터 추가
+                success: function(response) {
+                    // 생성 성공 시 처리
+                    console.log("플레이리스트 생성 성공:", response);
+                    // 모달 닫기
+                    $("#createPlaylistModal").modal("hide");
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // 에러 처리
+                    if (xhr.status === 409) {
+                        // 이미 플레이리스트가 존재하는 경우
+                        alert("플레이리스트는 한 개만 생성 가능합니다.");
+                    } else {
+                        console.error("플레이리스트 생성 에러:", error);
+                    }
+                }
+            });
+        });
+    });
+
+
+</script>
+
+</body>
+
+</html>
+

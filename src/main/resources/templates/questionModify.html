@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <!-- Title -->
+  <title>VibeMusic</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="img/core-img/favicon.ico">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+
+
+</head>
+
+<body>
+<div layout:fragment="content">
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+      <div class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+      <div class="bradcumbContent">
+        <p>Give us question</p>
+        <h2> Q&A </h2>
+      </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <!-- ##### Blog Area Start ##### -->
+    <div class="blog-area section-padding-100">
+
+
+        <div class="container">
+        <div class="row">
+          <div class="single-blog-post col-lg-12">
+
+            <!-- Single Post Start -->
+            <div class = "single-blog-post">
+              <h5 class="card-title">Q&A Modify</h5>
+
+              <div class ="single-blog-post" >
+<!--                <form th:action="@{/questionModify}" method="post" id="f1">-->
+                  <form action="/questionModify" method="post" id="f1">
+
+                      <div style="display: none;">
+                          <span>Question No.</span>
+                          <input type="text" class="form-control col-sm-12" id="qno" th:value="${dto.qno}" name="qno" readonly>
+                      </div>
+
+
+                      <div>
+                      <span >Title</span>
+                  <input type="text" th:value="${dto.qTitle}" name="qTitle" id="qTitle" class="border border-light bg-light p-4 col-sm-12">
+                </div>
+
+                <div >
+                  <span >Content</span>
+                  <textarea class="border border-light bg-light p-4 col-sm-12 qContent" id="qContent" name="qContent" rows="5">[[${dto.qContent}]]</textarea>
+                </div>
+
+                <div >
+                  <span>Writer</span>
+                  <input type="text" th:value="${dto.qWriter}" id="qWriter" name="qWriter" class="border border-light bg-light p-4 col-sm-12 qWriter">
+                </div>
+
+                  <div class="my-4">
+                    <div class="float-end d-flex justify-content-center mb-3">
+                      <a th:href="|@{/questions}?${link}|" class="text-decoration-none">
+                        <button type="button" class="btn oneMusic-btn" data-bs-dismiss="modal">List</button>
+                      </a>
+                      <button type="submit" class = "btn oneMusic-btn modBtn">Update</button>
+                      <button type="button" class = "btn oneMusic-btn removeBtn">Remove</button>
+                    </div>
+                  </div>
+
+                </form>
+
+
+              </div><!--single-blog-post end-->
+
+
+            </div>
+
+          </div>
+
+          <div class="col-12 col-lg-3">
+<!--            <div class="blog-sidebar-area" style="display: none;">-->
+
+<!--              &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--              <div class="single-widget-area mb-30">-->
+<!--                <div class="widget-title">-->
+<!--                  <h5>Categories</h5>-->
+<!--                </div>-->
+<!--                <div class="widget-content">-->
+<!--                  <ul>-->
+<!--                    <li><a href="#">Music</a></li>-->
+<!--                    <li><a href="#">Events &amp; Press</a></li>-->
+<!--                    <li><a href="#">Festivals</a></li>-->
+<!--                    <li><a href="#">Lyfestyle</a></li>-->
+<!--                    <li><a href="#">Uncategorized</a></li>-->
+<!--                  </ul>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--              <div class="single-widget-area mb-30">-->
+<!--                <div class="widget-title">-->
+<!--                  <h5>Archive</h5>-->
+<!--                </div>-->
+<!--                <div class="widget-content">-->
+<!--                  <ul>-->
+<!--                    <li><a href="#">February 2018</a></li>-->
+<!--                    <li><a href="#">March 2018</a></li>-->
+<!--                    <li><a href="#">April 2018</a></li>-->
+<!--                    <li><a href="#">May 2018</a></li>-->
+<!--                    <li><a href="#">June 2018</a></li>-->
+<!--                  </ul>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--              <div class="single-widget-area mb-30">-->
+<!--                <div class="widget-title">-->
+<!--                  <h5>Tags</h5>-->
+<!--                </div>-->
+<!--                <div class="widget-content">-->
+<!--                  <ul class="tags">-->
+<!--                    <li><a href="#">music</a></li>-->
+<!--                    <li><a href="#">events</a></li>-->
+<!--                    <li><a href="#">artists</a></li>-->
+<!--                    <li><a href="#">press</a></li>-->
+<!--                    <li><a href="#">mp3</a></li>-->
+<!--                    <li><a href="#">videos</a></li>-->
+<!--                    <li><a href="#">concerts</a></li>-->
+<!--                    <li><a href="#">performers</a></li>-->
+<!--                  </ul>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--              <div class="single-widget-area mb-30">-->
+<!--                <a href="#"><img src="img/bg-img/add2.gif" alt=""></a>-->
+<!--              </div>-->
+
+
+<!--            </div>-->
+          </div>
+        </div>
+      </div>
+
+      <!-- ##### Blog Area End ##### -->
+        </form>
+</div>
+</div>
+
+
+<!-- ##### All Javascript Script ##### -->
+<!-- 메일링 스크립트 -->
+<script src="js/email-form/email-form.js"></script>
+<script data-cfasync="false" type="text/javascript" src="js/email-form/form-submission-handler.js"></script>
+<!-- jQuery-2.2.4 js -->
+<script src="js/jquery/jquery-2.2.4.min.js"></script>
+<!-- Popper js -->
+<script src="js/bootstrap/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<!-- All Plugins js -->
+<script src="js/plugins/plugins.js"></script>
+<!-- Active js -->
+<script src="js/active.js"></script>
+
+    <script layout:fragment="script" th:inline="javascript">
+      const errors =[[${errors}]]
+      console.log(errors)
+
+      let errorMsg = ''
+
+      if(errors){
+        for (let i = 0; i< errors.length; i++){
+          errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+        }
+        history.replaceState({}, null, null)
+        alert(errorMsg)
+
+      }
+
+
+      //modify
+      const link = [[${pageRequestDTO.getLink()}]]
+      const formObj = document.querySelector("#f1")
+
+      document.querySelector(".modBtn").addEventListener("click", function (e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.action = `/questionModify?${link}`
+        formObj.method = 'post'
+        formObj.submit()
+      },false)
+
+      document.querySelector(".removeBtn").addEventListener("click",function (e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.action = `/questionRemove`
+        formObj.method = 'post'
+        formObj.submit()
+      },false);
+
+
+      const qno = [[${dto.qno}]]
+      let i = 1;
+
+      const auth = [[${#authentication.principal}]]
+      const currentUser = [[${#authentication.principal.username}]]
+      const error = [[${errors}]]
+
+      console.log(error);
+      //댓글 리스트, 페이징 처리
+
+      //registerModal
+      const qContent = document.querySelector(".qContent")
+      const qWriter = document.querySelector(".qWriter")
+
+
+      const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"))
+
+      const questionHeader = document.querySelector(".answerHeader")
+      const modifyBtn = document.querySelector(".modifyBtn")
+      const removeBtn = document.querySelector(".removeBtn")
+      const closeModifyBtn = document.querySelector(".closeModifyBtn")
+
+      let hasAuth = false
+
+
+
+      //댓글 수정
+      modifyBtn.addEventListener("click", function (e) {
+          if (!hasAuth) {
+              alert("작성자만 수정이 가능합니다.")
+              modifyModal.hide()
+              return
+          }
+
+
+          });
+
+      removeBtn.addEventListener("click", function (e) {
+
+          if (!hasAuth) {
+              alert("작성자만 삭제 가능합니다.")
+              modifyModal.hide()
+              return
+          }
+
+          removeQuestion(questionHeader.innerHTML).then(result => {
+              alert(result.qno + '번의 게시글이 삭제되었습니다.')
+              qContent.value = ''
+              modifyModal.hide()
+
+              location.reload()
+          }).catch(e => {
+              console.log(e)
+          })
+      }, false)
+
+      closeModifyBtn.addEventListener("click", function (e) {
+          modifyModal.hide()
+      })
+
+
+    </script>
+
+
+</script>
+</body>
+</html>

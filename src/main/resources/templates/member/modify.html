@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="breadcumb-area bg-img bg-overlay"
+             th:style="'background-image: url(' + @{/img/bg-img/breadcumb3.jpg} + ')'">
+        <div class="bradcumbContent">
+            <h2>VIBE MUSIC</h2>
+            <h3>Member Modify Page</h3>
+        </div>
+    </section>
+
+    <section class="login-area section-padding-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8">
+                    <div class="login-content">
+                        <h3>WELCOME VIBE MUSIC PAGE</h3>
+                        <div class="login-form">
+                            <form id="registerForm" action="/member/modify" method="post">
+
+                                <div class="form-group">
+                                    <label>ID *</label>
+                                    <input type="text" name="mid" class="form-control mid" readonly th:value="${#authentication.principal.username}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>PW *</label>
+                                    <input type="password" name="mpw" class="form-control mpw" placeholder="변경할 비밀번호를 입력하여주세요.">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>PW Check *</label>
+                                    <input type="password" name="mpwCheck" class="form-control mpwCheck" placeholder="비밀번호를 한번 더 입력하여주세요.">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>NAME *</label>
+                                    <input type="text" name="name" class="form-control name" th:value="${name}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>EMAIL *</label>
+                                    <input type="email" name="email" id="mail" class="form-control" th:value="${email}" readonly>
+
+                                <div class="form-group">
+                                    <label>PHONE</label>
+                                    <input type="text" name="phone" class="form-control phone" th:value="${phone}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>ADDRESS</label>
+                                    <input type="text" name="address" class="form-control address" th:value="${address}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>BIRTH DATE</label>
+                                    <input type="text" name="birthDate" class="form-control birthDate" th:value="${birthDate}">
+                                </div>
+
+                                <button type="submit" class="btn oneMusic-btn modifyBtn">MODIFY</button>
+                                <button type="reset" class="btn oneMusic-buy-now-area">RESET</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    const mpw = document.querySelector(".mpw");
+    const mpwCheck = document.querySelector(".mpwCheck");
+
+    let passwordCheck = false;
+
+    document.querySelector(".modifyBtn").addEventListener("click", function (e){
+
+        if(mpw.value === mpwCheck.value){
+           passwordCheck = true;
+        }
+
+        if(passwordCheck != true){
+            e.preventDefault();
+            e.stopPropagation();
+            alert("비밀번호와 비밀번호 확인이 다릅니다. 확인하여주세요.")
+            return;
+        }
+
+        alert("회원정보 수정 완료. 다시 로그인하여주세요.")
+    })
+</script>
+
+</html>

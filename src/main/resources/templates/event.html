@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Title -->
+    <title>One Music - Modern Music HTML5 Template</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+
+</head>
+
+<body>
+<div layout:fragment="content">
+    <form action="/event" method="get">
+
+
+        <!-- Preloader -->
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+        <!-- ##### Breadcumb Area Start ##### -->
+        <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+            <div class="bradcumbContent">
+                <p>See what’s new</p>
+                <h2>Events</h2>
+            </div>
+        </section>
+        <!-- ##### Breadcumb Area End ##### -->
+
+        <!-- ##### Blog Area Start ##### -->
+        <div class="blog-area section-padding-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <!-- Single Post Start -->
+                        <div class = "blog-content">
+                            <div class = "blog-content">
+                                <div class = blog-content>
+                                    <div class = blog-content>
+
+                                    </div>
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">Event Board List </h5>
+
+                                        <div class="my-4">
+
+                                            <div class="float-end" sec:authorize="hasRole('ADMIN')">
+                                                <a th:href="|@{/eventregister}|" class="text-decoration-none">
+                                                    <button type="button" class="btn oneMusic-btn mt-30">Register</button>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <p></p>
+
+                                        <div class="col">
+
+                                            <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                                            <div class="input-group col-lg-7 mx-auto">
+                                                <div class="input-group-prepend">
+                                                    <select class="form-select" name="type" style="display: none;">
+                                                        <option value="t" th:selected="${pageRequestDTO.type =='t'}"></option>
+                                                    </select>
+                                                </div>
+                                                <input type="text" class="form-control" name="keyword" placeholder="See what’s new"
+                                                       th:value="${pageRequestDTO.keyword}">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
+                                                    <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <p></p>
+
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Bno</th>
+                                                <th scope="col" colspan="2">Title</th>
+                                                <th scope="col">RegDate</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody th:with="link = ${pageRequestDTO.getLink()}">
+                                                <tr th:each="dto:${responseDTO.dtoList}">
+                                                    <th scope="row">[[${dto.ebno}]]</th>
+                                                    <td colspan="2">
+                                                        <a th:href="|@{/eventread(ebno =${dto.ebno})}&${link}|">[[${dto.title}]]</a>
+                                                    </td>
+                                                    <!-- Date의 불필요한 상세 정보를 간략하게 줄여줌 -->
+                                                    <td th:text="${#temporals.format(dto.regDate, 'yyyy-MM-dd')}"></td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:if="${responseDTO}" class="oneMusic-pagination-area wow fadeInUp" data-wow-delay="300ms">
+                                <nav>
+                                    <ul class="news-pagination">
+
+                                        <li th:if="${responseDTO.page > 1}"
+                                            th:class="${responseDTO.prev ? 'disabled' : ''}" class="page-item">
+                                            <a th:href="@{/event(page=1, size=${responseDTO.size}, type=${param.type}, keyword=${param.keyword})}">◀◀ First</a>
+                                        </li>
+
+                                        <li th:if="${responseDTO.page > 2}"
+                                            th:class="${responseDTO.prev ? '' : 'disabled'}" class="page-item">
+                                            <a th:href="@{/event(page=${responseDTO.page - 1}, size=${responseDTO.size}, type=${param.type}, keyword=${param.keyword})}">◀ Previous</a>
+                                        </li>
+
+                                        <!-- 숫자로 페이지 번호 표시 -->
+                                        <li th:each="page : ${#numbers.sequence(responseDTO.start, responseDTO.end)}"
+                                            th:class="${responseDTO.page == page ? 'active page-item' : 'page-item'}">
+                                            <a th:href="@{/event(page=${page}, size=${responseDTO.size}, type=${param.type}, keyword=${param.keyword})}" th:text="${page}"
+                                               th:style="${responseDTO.page == page ? 'color: black;' : 'color: pink;'}">
+                                            </a>
+                                        </li>
+
+                                        <li th:if="${responseDTO.page +1 < responseDTO.totalPage}"
+                                            th:class="${responseDTO.next ? '' : 'disabled'}" class="page-item">
+                                            <a th:href="@{/event(page=${responseDTO.page + 1}, size=${responseDTO.size}, type=${param.type}, keyword=${param.keyword})}">Next ▶</a>
+                                        </li>
+
+                                        <li th:if="${responseDTO.totalPage > (responseDTO.page)}"
+                                            th:class="${responseDTO.next ? 'disabled' : ''}" class="page-item">
+                                            <a th:href="@{/event(page=${responseDTO.totalPage}, size=${responseDTO.size}, type=${param.type}, keyword=${param.keyword})}">Last ▶▶</a>
+                                        </li>
+
+                                    </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ##### Blog Area End ##### -->
+    </form>
+</div>
+
+
+
+<!-- ##### All Javascript Script ##### -->
+<!-- 메일링 스크립트 -->
+<script src="js/email-form/email-form.js"></script>
+<script data-cfasync="false" type="text/javascript" src="js/email-form/form-submission-handler.js"></script>
+<!-- jQuery-2.2.4 js -->
+<script src="js/jquery/jquery-2.2.4.min.js"></script>
+<!-- Popper js -->
+<script src="js/bootstrap/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<!-- All Plugins js -->
+<script src="js/plugins/plugins.js"></script>
+<!-- Active js -->
+<script src="js/active.js"></script>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        self.location = '/event';
+
+    }, false)
+
+</script>
+</body>
+</html>

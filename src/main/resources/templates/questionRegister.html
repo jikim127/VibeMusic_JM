@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>Add Question</title>
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+
+</head>
+
+<body>
+<div layout:fragment="content">
+    <form action="/questionRegister" method="post">
+
+
+        <!-- Preloader -->
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+
+        <!-- ##### Breadcumb Area Start ##### -->
+        <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+            <div class="bradcumbContent">
+                <p>Give us question</p>
+                <h2> Q&A </h2>
+            </div>
+        </section>
+        <!-- ##### Breadcumb Area End ##### -->
+
+        <!-- ##### Blog Area Start ##### -->
+        <div class="blog-area section-padding-100">
+            <div class="container">
+                <div class="row">
+                    <div class="single-blog-post col-lg-12">
+
+                        <!-- Single Post Start -->
+                        <div class = "single-blog-post">
+
+                            <h5 class="card-title">Q&A Register</h5>
+
+                            <div class ="single-blog-post" >
+
+                                <form action="/questionRegister" method="post">
+
+                                    <div class ="input-group-mb-3">
+                                        <span>Title</span>
+                                        <input type="text" name="qTitle" id="qTitle" class="border border-light bg-light p-4 col-sm-12" placeholder="Title">
+                                    </div>
+
+                                    <div class ="input-group-mb-3">
+                                        <span>Content</span>
+                                        <textarea class="border border-light bg-light p-4 col-sm-12" rows="5" id="qContent" name="qContent" ></textarea>
+                                    </div>
+
+                                    <div class ="input-group-mb-3">
+                                        <span>Writer</span>
+
+                                        <input type="text" id="qWriter" name="qWriter" class="border border-light bg-light p-4 col-sm-12" placeholder="Writer"
+                                               th:value="${#authentication.principal.username}" readonly>
+                                    </div>
+
+                                    <div class="my-4">
+                                        <div class="float-end d-flex justify-content-center mb-3">
+                                            <button type="submit" class = "btn oneMusic-btn">Submit</button>
+                                            <button type="reset" class = "btn oneMusic-btn">Reset</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+
+                            </div><!--single-blog-post end-->
+
+
+                        </div>
+
+                    </div>
+
+<!--                    <div class="col-12 col-lg-3">-->
+<!--                        <div class="blog-sidebar-area" style="display: none;">-->
+
+<!--                            &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--                            <div class="single-widget-area mb-30">-->
+<!--                                <div class="widget-title">-->
+<!--                                    <h5>Categories</h5>-->
+<!--                                </div>-->
+<!--                                <div class="widget-content">-->
+<!--                                    <ul>-->
+<!--                                        <li><a href="#">Music</a></li>-->
+<!--                                        <li><a href="#">Events &amp; Press</a></li>-->
+<!--                                        <li><a href="#">Festivals</a></li>-->
+<!--                                        <li><a href="#">Lyfestyle</a></li>-->
+<!--                                        <li><a href="#">Uncategorized</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--                            <div class="single-widget-area mb-30">-->
+<!--                                <div class="widget-title">-->
+<!--                                    <h5>Archive</h5>-->
+<!--                                </div>-->
+<!--                                <div class="widget-content">-->
+<!--                                    <ul>-->
+<!--                                        <li><a href="#">February 2018</a></li>-->
+<!--                                        <li><a href="#">March 2018</a></li>-->
+<!--                                        <li><a href="#">April 2018</a></li>-->
+<!--                                        <li><a href="#">May 2018</a></li>-->
+<!--                                        <li><a href="#">June 2018</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--                            <div class="single-widget-area mb-30">-->
+<!--                                <div class="widget-title">-->
+<!--                                    <h5>Tags</h5>-->
+<!--                                </div>-->
+<!--                                <div class="widget-content">-->
+<!--                                    <ul class="tags">-->
+<!--                                        <li><a href="#">music</a></li>-->
+<!--                                        <li><a href="#">events</a></li>-->
+<!--                                        <li><a href="#">artists</a></li>-->
+<!--                                        <li><a href="#">press</a></li>-->
+<!--                                        <li><a href="#">mp3</a></li>-->
+<!--                                        <li><a href="#">videos</a></li>-->
+<!--                                        <li><a href="#">concerts</a></li>-->
+<!--                                        <li><a href="#">performers</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--                            <div class="single-widget-area mb-30">-->
+<!--                                <a href="#"><img src="img/bg-img/add2.gif" alt=""></a>-->
+<!--                            </div>-->
+
+
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
+            </div>
+        </div>
+            <!-- ##### Blog Area End ##### -->
+    </form>
+
+</div>
+
+
+
+<!-- ##### All Javascript Script ##### -->
+<!-- 메일링 스크립트 -->
+<script src="js/email-form/email-form.js"></script>
+<script data-cfasync="false" type="text/javascript" src="js/email-form/form-submission-handler.js"></script>
+<!-- jQuery-2.2.4 js -->
+<script src="js/jquery/jquery-2.2.4.min.js"></script>
+<!-- Popper js -->
+<script src="js/bootstrap/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<!-- All Plugins js -->
+<script src="js/plugins/plugins.js"></script>
+<!-- Active js -->
+<script src="js/active.js"></script>
+<script layout:fragment="script" th:inline="javascript">
+
+    const errors =[[${errors}]]
+    console.log(errors)
+
+    let errorMsg = ''
+
+    if(errors){
+        for (let i = 0; i< errors.length; i++){
+            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+        }
+        alert(errorMsg)
+
+    }
+
+
+    const auth = [[${#authentication.principal}]]
+    const errors = [[${errors}]]
+    console.log(errors)
+
+
+
+</script>
+
+</body>
+</html>

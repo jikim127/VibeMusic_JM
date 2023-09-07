@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Title -->
+    <title>One Music - Modern Music HTML5 Template</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+
+</head>
+
+<body>
+<div layout:fragment="content">
+    <form action="/eventread" method="get">
+
+
+        <!-- Preloader -->
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+        <!-- ##### Breadcumb Area Start ##### -->
+        <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+            <div class="bradcumbContent">
+                <p>See what’s new</p>
+                <h2>Events</h2>
+            </div>
+        </section>
+        <!-- ##### Breadcumb Area End ##### -->
+
+        <!-- ##### Blog Area Start ##### -->
+        <div class="blog-area section-padding-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <!-- Single Post Start -->
+                        <div class = "blog-content">
+                            <div class = "blog-content">
+                                <div class = blog-content>
+                                    <div class = blog-content>
+
+                                    </div>
+
+                                    <div class="card-title">
+                                        <h5 class="card-title">Event Board Read </h5>
+
+                                        <div class="card-body">
+
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Bno</span>
+                                                <input type="text" class="form-control" th:value="${dto.ebno}" readonly>
+                                            </div>
+
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Title</span>
+                                                <input type="text" class="form-control" th:value="${dto.title}" readonly>
+                                            </div>
+
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Content</span>
+                                                <textarea class="form-control col-sm-12" rows="20" readonly>[[${dto.content}]]</textarea>
+                                            </div>
+
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Writer</span>
+                                                <input type="text" class="form-control" th:value="${dto.writer}" readonly>
+                                            </div>
+
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">RegDate</span>
+                                                <input type="text" class="form-control"
+                                                       th:value="${#temporals.format(dto.regDate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                                            </div>
+
+                                            <div class="my-4">
+                                                <div class="float-end" th:with="user = ${#authentication.principal}" style="display: inline-block">
+                                                    <a th:href="|@{/event}?${pageRequestDTO.getLink()}|" class="text-decoration-none">
+                                                        <button type="button" class="btn oneMusic-btn mt-30" data-bs-dismiss="modal">List</button>
+                                                    </a>
+
+                                                    <div sec:authorize="hasRole('ADMIN')" style="display: inline-block">
+<!--                                                    <a th:if="${user != 'anonymousUser' && user.username == dto.writer}"-->
+                                                       <a th:href="|@{/eventmodify(ebno=${dto.ebno})}&${link}|">
+                                                        <button type="button" class="btn oneMusic-btn mt-30">Modify</button>
+                                                    </a>
+                                                    </div>
+<!--                                                    <a th:with="user = ${#authentication.principal.username}"-->
+<!--                                                       th:if="${user != 'null' && user == dto.writer}"-->
+<!--                                                       th:href="|@{/eventmodify(ebno=${dto.ebno})}&${link}|" class="text-decoration-none">-->
+<!--                                                    </a>-->
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- ##### Blog Area End ##### -->
+
+
+
+    </form>
+</div>
+
+
+<th:block layout:fragment="script"/>
+</body>
+
+<!-- ##### All Javascript Script ##### -->
+<!-- 메일링 스크립트 -->
+<script src="js/email-form/email-form.js"></script>
+<script data-cfasync="false" type="text/javascript" src="js/email-form/form-submission-handler.js"></script>
+<!-- jQuery-2.2.4 js -->
+<script src="js/jquery/jquery-2.2.4.min.js"></script>
+<!-- Popper js -->
+<script src="js/bootstrap/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<!-- All Plugins js -->
+<script src="js/plugins/plugins.js"></script>
+<!-- Active js -->
+<script src="js/active.js"></script>
+
+<script layout:fragment="script" th:inline="javascript">
+
+
+</script>
+
+</html>

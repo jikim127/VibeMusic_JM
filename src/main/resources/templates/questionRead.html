@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <!-- Title -->
+  <title>VibeMusic</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="img/core-img/favicon.ico">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+
+
+</head>
+
+<body>
+
+
+<div layout:fragment="content">
+
+
+  <!-- Preloader -->
+  <div class="preloader d-flex align-items-center justify-content-center">
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+
+  <!-- ##### Breadcumb Area Start ##### -->
+  <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+    <div class="bradcumbContent">
+      <p>Give us question</p>
+      <h2> Q&A </h2>
+    </div>
+  </section>
+  <!-- ##### Breadcumb Area End ##### -->
+
+  <!-- ##### Blog Area Start ##### -->
+  <div class="blog-area section-padding-100">
+    <div class="container">
+      <div class="row">
+        <div class="single-blog-post col-lg-12">
+          <div class ="single-blog-post" >
+            <!-- Single Post Start -->
+            <h5 class="card-title">Q&A Read</h5>
+
+
+
+            <div>
+              <span >Title</span>
+              <input type="text" th:value="${dto.qTitle}" class="border border-light bg-light p-4 col-sm-12" readonly>
+            </div>
+
+            <div >
+              <span >Content</span>
+              <textarea class="border border-light bg-light p-4 col-sm-12" rows="5" readonly>[[${dto.qContent}]]</textarea>
+            </div>
+
+            <div >
+              <span>Writer</span>
+              <input type="text" th:value="${dto.qWriter}" class="border border-light bg-light p-4 col-sm-12 qWriter" readonly>
+            </div>
+
+
+            <div class="my-4">
+<!--              <div class="float-end d-flex justify-content-center mb-3" th:with="link = ${pageRequestDTO.getLink()}" >-->
+              <div class="float-end d-flex justify-content-center mb-3" th:with="link = ${pageRequestDTO.getLink()}">
+                <button class="btn oneMusic-btn mt-30 addAnswerBtn" sec:authorize="hasRole('ADMIN')">댓글 추가</button>
+                <a th:href="|@{/questionModify(qno=${dto.qno})}&${link}|" class="text-decoration-none">
+                  <button type="button" class="btn oneMusic-btn mt-30 ModQ">modify</button>
+                </a>
+                <a th:href="|@{/questions}?${link}|" class="text-decoration-none">
+                  <button type="button" class="btn oneMusic-btn mt-30" data-bs-dismiss="modal">List</button>
+                </a>
+              </div>
+            </div>
+
+            <!-- answer start -->
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <span>Answer</span>
+                <ul class="list-group answerList">
+
+                </ul>
+              </div>
+            </div>
+
+            <!--##### 댓글 페이징 처리 #####-->
+            <div class="d-flex justify-content-center row mt-3">
+              <div class="col">
+                <ul class="pagination answerPaging">
+                </ul>
+              </div>
+            </div>
+
+
+          </div><!--single-blog-post end-->
+        </div><!--single-blog-post col-lg-9-->
+
+<!--        <div class="col-12 col-lg-3">-->
+<!--          <div class="blog-sidebar-area" style="display: none;">-->
+
+<!--            &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--            <div class="single-widget-area mb-30">-->
+<!--              <div class="widget-title">-->
+<!--                <h5>Categories</h5>-->
+<!--              </div>-->
+<!--              <div class="widget-content">-->
+<!--                <ul>-->
+<!--                  <li><a href="#">Music</a></li>-->
+<!--                  <li><a href="#">Events &amp; Press</a></li>-->
+<!--                  <li><a href="#">Festivals</a></li>-->
+<!--                  <li><a href="#">Lyfestyle</a></li>-->
+<!--                  <li><a href="#">Uncategorized</a></li>-->
+<!--                </ul>-->
+<!--              </div>-->
+<!--            </div>&lt;!&ndash;single-widget-area mb-30&ndash;&gt;-->
+
+<!--            &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--            <div class="single-widget-area mb-30">-->
+<!--              <div class="widget-title">-->
+<!--                <h5>Archive</h5>-->
+<!--              </div>-->
+<!--              <div class="widget-content">-->
+<!--                <ul>-->
+<!--                  <li><a href="#">February 2018</a></li>-->
+<!--                  <li><a href="#">March 2018</a></li>-->
+<!--                  <li><a href="#">April 2018</a></li>-->
+<!--                  <li><a href="#">May 2018</a></li>-->
+<!--                  <li><a href="#">June 2018</a></li>-->
+<!--                </ul>-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--            <div class="single-widget-area mb-30">-->
+<!--              <div class="widget-title">-->
+<!--                <h5>Tags</h5>-->
+<!--              </div>-->
+<!--              <div class="widget-content">-->
+<!--                <ul class="tags">-->
+<!--                  <li><a href="#">music</a></li>-->
+<!--                  <li><a href="#">events</a></li>-->
+<!--                  <li><a href="#">artists</a></li>-->
+<!--                  <li><a href="#">press</a></li>-->
+<!--                  <li><a href="#">mp3</a></li>-->
+<!--                  <li><a href="#">videos</a></li>-->
+<!--                  <li><a href="#">concerts</a></li>-->
+<!--                  <li><a href="#">performers</a></li>-->
+<!--                </ul>-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Widget Area &ndash;&gt;-->
+<!--            <div class="single-widget-area mb-30">-->
+<!--              <a href="#"><img src="img/bg-img/add2.gif" alt=""></a>-->
+<!--            </div>&lt;!&ndash;single-widget-area mb-30&ndash;&gt;-->
+
+<!--          </div>&lt;!&ndash;blog-sidebar-area&ndash;&gt;-->
+<!--        </div>&lt;!&ndash;col-12 col-lg-3&ndash;&gt;-->
+
+      </div><!--class="row"-->
+    </div><!--div class="container"-->
+  </div><!-- ##### blog-area section-padding-100 ##### -->
+
+  <!--##### 댓글 등록 처리 #####-->
+
+  <div class="modal registerModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">댓글 등록</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <span class="input-group-text">Answer Text</span>
+            <input type="text" class="form-control answerText">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Answerer</span>
+            <input type="text" class="form-control answerer"
+                   th:value="${#authentication.principal.username}" readonly>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary registerBtn">Register</button>
+            <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--#####  ModifyModal Start  #####-->
+
+  <div class="modal modifyModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title answerHeader"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <span class="input-group-text">AnswerText</span>
+            <input type="text" class="form-control modifyText">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info modifyBtn">수정</button>
+          <button type="button" class="btn btn-outline-danger removeBtn">삭제</button>
+          <button type="button" class="btn btn-outline-dark closeModifyBtn">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="http://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script src="/js/answer.js"></script>
+</div> <!--layout:fragment="content-->
+
+
+
+<!-- ##### All Javascript Script ##### -->
+<!-- jQuery-2.2.4 js -->
+<script src="js/jquery/jquery-2.2.4.min.js"></script>
+<!-- Popper js -->
+<script src="js/bootstrap/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<!-- All Plugins js -->
+<script src="js/plugins/plugins.js"></script>
+<!-- Active js -->
+<script src="js/active.js"></script>
+
+
+
+<script layout:fragment="script" th:inline="javascript">
+
+  const qno = [[${dto.qno}]]
+  let i = 1;
+
+  const auth = [[${#authentication.principal}]]
+  const currentUser = [[${#authentication.principal.username}]]
+  const error = [[${errors}]]
+
+  console.log(error);
+  //댓글 리스트, 페이징 처리
+  const answerList = document.querySelector('.answerList')
+
+  const answerPaging = document.querySelector('.answerPaging')
+  //댓글 등록 모달
+
+  const registerModal = new bootstrap.Modal(document.querySelector(".registerModal"))
+  //registerModal
+  const registerBtn = document.querySelector(".registerBtn")
+  const answerText = document.querySelector(".answerText")
+  const answerer = document.querySelector(".answerer")
+  const writer = document.querySelector(".qWriter")
+
+  const closeRegisterBtn = document.querySelector(".closeRegisterBtn")
+  //modifyModal
+
+  const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"))
+
+  const answerHeader = document.querySelector(".answerHeader")
+  const modifyText = document.querySelector(".modifyText")
+  const modifyBtn = document.querySelector(".modifyBtn")
+  const removeBtn = document.querySelector(".removeBtn")
+  const closeModifyBtn = document.querySelector(".closeModifyBtn")
+
+
+  let hasAuth = false
+  let hasAuth2 = false
+
+  function printList(dtoList) {
+    let str = '';
+
+    if (dtoList && dtoList.length > 0) {
+      for (const dto of dtoList) {
+        str += `<li class="border border-light bg-light p-4 d-flex answerItem">` +
+                `<span class="col-2">${i}</span>` +
+                `<span class="col-6" data-ano="${dto.ano}">${dto.answerText}</span>` +
+                `<span class="col-2">${dto.answerer}</span>` +
+                `<span class="col-2">${dto.regDate}</span> ` +
+                `</li>`
+        i++;
+      }
+    }
+    answerList.innerHTML = str;
+
+  }
+
+  //댓글 페이징 처리
+  function printPages(data) {
+    let pageStr = '';
+
+    if (data.prev) {
+      pageStr += `<li class="page-item"><a class="page-link" date-page="${data.start - 1}">PREV</a></li>`
+    }
+    for (let i = data.start; i <= data.end; i++) {
+      pageStr += `<li class="page-item ${i == data.page ? "active" : ""} "><a class="page-link" date-page="${i}">${i}</a></li>`
+    }
+    if (data.next) {
+      pageStr += `<li class="page-item"><a class="page-link" date-page="${data.end + 1}">NEXT</a></li>`
+    }
+    answerPaging.innerHTML = pageStr;
+  }
+
+  function printAnswers(page, size, goLast) {
+    getList({qno, page, size, goLast}).then(
+            data => {
+              printList(data.dtoList)
+              printPages(data)
+            }
+    ).catch(e => {
+      console.error(e);
+    })
+  }
+
+  printAnswers(1, 10, true)
+
+  document.querySelector(".addAnswerBtn").addEventListener("click", function (e) {
+    registerModal.show()
+  }, false)
+
+  closeRegisterBtn.addEventListener("click", function (e) {
+    registerModal.hide()
+  }, false)
+
+  registerBtn.addEventListener("click", function (e) {
+    const answerObj = {
+      qno: qno,
+      answerText: answerText.value,
+      answerer: answerer.value
+    }
+    console.log("answerObj.qno : " + answerObj.qno)
+    addAnswer(answerObj).then(result => {
+      alert(i + '번째 댓글 등록이 완료되었습니다')
+      registerModal.hide()
+      answerText.value = ''
+      answerer.value = ''
+      printAnswers(1, 10, true)
+      location.reload();
+    }).catch(e => {
+      alert("오류 발생")
+    })
+  }, false)
+
+  //댓글 페이지 이동 처리
+  let page = 1;
+  let size = 10;
+
+  answerPaging.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const target = e.target;
+
+    if (!target || target.tagName != 'A') {
+      return
+    }
+    const pageNum = target.getAttribute("date-page")
+    page = pageNum;
+    printAnswers(page, size)
+  }, false)
+
+  answerList.addEventListener("click", function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const target = e.target
+
+    if (!target || target.tagName != 'SPAN') {
+      return
+    }
+
+    const ano = target.getAttribute("data-ano")
+
+    if (!ano) {
+      return
+    }
+
+    console.log("ano : ", ano)
+
+    getAnswer(ano).then(answer => {
+      console.log(answer)
+      answerHeader.innerHTML = answer.ano
+      modifyText.value = answer.answerText
+
+      modifyModal.show()
+
+      hasAuth = currentUser === answer.answerer
+
+    }).catch(e => alert('^^ㅣ발 왜 안돼'))
+  }, false)
+
+
+
+  //댓글 수정
+  modifyBtn.addEventListener("click", function (e) {
+    if (!hasAuth) {
+      alert("댓글 작성자만 수정이 가능합니다.")
+      modifyModal.hide()
+      return
+    }
+
+    const answerObj = {
+      qno: qno,
+      ano: answerHeader.innerHTML,
+      answerText: modifyText.value
+    }
+    console.log("answerObj.qno : "+ answerObj.qno)
+    modifyAnswer(answerObj).then(result => {
+      alert(result.ano + '번 댓글이 수정되었습니다.')
+      answerText.value = ''
+      modifyModal.hide()
+      printAnswers(page, size)
+      location.reload()
+    }).catch(e => {
+      console.log(e)
+    })
+  }, false)
+
+
+  removeBtn.addEventListener("click", function (e) {
+
+    if (!hasAuth) {
+      alert("댓글 작성자만 수정이 가능합니다.")
+      modifyModal.hide()
+      return
+    }
+
+    removeAnswer(answerHeader.innerHTML).then(result => {
+      alert(result.ano + '번의 댓글이 삭제되었습니다.')
+      answerText.value = ''
+      modifyModal.hide()
+
+      page = 1
+
+      printAnswers(page, size)
+      location.reload()
+    }).catch(e => {
+      console.log(e)
+    })
+  }, false)
+
+  closeModifyBtn.addEventListener("click", function (e) {
+    modifyModal.hide()
+  })
+
+
+  const currentUserID = [[${#authentication.principal}]]
+
+  // 가상의 게시글 아이디
+  const postID = [[${dto.qWriter}]]
+
+  // 현재 로그인한 사용자와 게시글의 아이디 비교
+  if (currentUserID === postID) {
+    console.log("현재 로그인한 사용자와 게시글의 아이디가 일치합니다.");
+  } else {
+    console.log("현재 로그인한 사용자와 게시글의 아이디가 일치하지 않습니다.");
+  }
+
+</script>
+
+
+</body>
+</html>

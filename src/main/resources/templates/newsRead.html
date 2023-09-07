@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <!-- Title -->
+  <title>VibeMusic - NewsRead</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="img/core-img/favicon.ico">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    h6{ color: #ff00cc;}
+  </style>
+
+</head>
+
+<body>
+<div layout:fragment="content">
+  <form action="/newsReply" method="get">
+
+
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+      <div class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+      <div class="bradcumbContent">
+        <p>See what’s new</p>
+        <h2> News</h2>
+      </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <!-- ##### Blog Area Start ##### -->
+    <div class="blog-area section-padding-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-lg-9">
+
+            <!-- Single Post Start -->
+            <div class="single-blog-post mb-100 wow fadeInUp" data-wow-delay="100ms">
+              <!-- Post Thumb -->
+              <div class="blog-post-thumb mt-30">
+                <img th:src="${dto.nImage}">
+                <!-- Post Date -->
+                <div class="post-date">
+                  <p>[[${dto.nRegDate}]]</p>
+                </div>
+              </div>
+
+              <!-- Blog Content -->
+              <div class="blog-content">
+                <!-- Post Title -->
+                <h3>[[${dto.nTitle}]]</h3>
+
+                <!-- Post Meta -->
+                <div class="post-meta d-flex mb-30">
+                  <p class="tags"><a href="#"><h6>in Events</h6></a>
+                  <p class="tags"><h6>[[${dto.nViewCount}]] Views</h6></p>
+                  <p class="tags">
+                </div>
+                <!-- Post Excerpt -->
+                <p th:utext="${dto.nFullNews}"></p>
+              </div>
+            </div> <!-- Single Post End -->
+
+            <!-- Reply -->
+            <div class="blog-content">
+              <h5>Comments</h5>
+              댓글 : 안녕
+            </div>
+
+          </div>
+
+          <div class="col-12 col-lg-3">
+            <div class="blog-sidebar-area">
+
+              <!-- Widget Area -->
+              <div class="single-widget-area mb-30">
+                <div class="widget-title">
+                  <h5>Categories</h5>
+                </div>
+                <div class="widget-content">
+                  <ul>
+                    <li><a href="#">Music</a></li>
+                    <li><a href="#">Events &amp; Press</a></li>
+                    <li><a href="#">Festivals</a></li>
+                    <li><a href="#">Lyfestyle</a></li>
+                    <li><a href="#">Uncategorized</a></li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Widget Area -->
+              <div class="single-widget-area mb-30">
+                <div class="widget-title">
+                  <h5>Archive</h5>
+                </div>
+                <div class="widget-content">
+                  <ul>
+                    <li><a href="#">February 2018</a></li>
+                    <li><a href="#">March 2018</a></li>
+                    <li><a href="#">April 2018</a></li>
+                    <li><a href="#">May 2018</a></li>
+                    <li><a href="#">June 2018</a></li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Widget Area -->
+              <div class="single-widget-area mb-30">
+                <div class="widget-title">
+                  <h5>Tags</h5>
+                </div>
+                <div class="widget-content">
+                  <ul class="tags">
+                    <li><a href="#">music</a></li>
+                    <li><a href="#">events</a></li>
+                    <li><a href="#">artists</a></li>
+                    <li><a href="#">press</a></li>
+                    <li><a href="#">mp3</a></li>
+                    <li><a href="#">videos</a></li>
+                    <li><a href="#">concerts</a></li>
+                    <li><a href="#">performers</a></li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Widget Area -->
+              <div class="single-widget-area mb-30">
+                <a href="#"><img src="img/bg-img/add2.gif" alt=""></a>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ##### Blog Area End ##### -->
+  </form>
+</div>
+</body>
+
+</html>

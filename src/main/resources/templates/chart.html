@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DAY 5</title>
+
+
+</head>
+
+<body>
+<div layout:fragment="content">
+  <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+    <div class="bradcumbContent">
+      <p>.</p>
+      <h2>음원 차트 TOP 100</h2>
+    </div>
+  </section>
+
+  <br>
+
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th scope="col">RANKING</th>
+      <th scope="col">-</th>
+      <th scope="col">제목</th>
+      <th scope="col">가수</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tbody th:each="music, num : ${music.subList(0, 100)}">
+    <tr>
+      <td>
+        <span th:text="${num.index + 1}" style="font-size: 21px;"></span>
+      </td> <!-- 'num.index' is the current index -->
+      <td><img th:src="${music.m_image}" /></td>
+      <td>
+        <a th:href="|@{/read(no=${music.no})}|">
+          <h2 th:text="${music.m_title}" ></h2>
+        </a>
+      </td>
+      <td><h4 th:text="${music.m_artist}" /></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

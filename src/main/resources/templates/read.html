@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>One Music - Modern Music HTML5 Template</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    const no = [[${dto.no}]]
+    let i = 1;
+
+    const auth = [[${#authentication.principal}]]
+    const currentUser = [[${#authentication.principal.username}]]
+    const error = [[${errors}]]
+
+    console.log(error);
+    //댓글 리스트, 페이징 처리
+    const replyList = document.querySelector('.replyList')
+
+    const replyPaging = document.querySelector('.replyPaging')
+    //댓글 등록 모달
+
+    const registerModal = new bootstrap.Modal(document.querySelector(".registerModal"))
+    //registerModal
+    const registerBtn = document.querySelector(".registerBtn")
+    const r_replyText = document.querySelector(".r_replyText")
+    const rreplyer = document.querySelector(".rreplyer")
+
+    const closeRegisterBtn = document.querySelector(".closeRegisterBtn")
+    //modifyModal
+
+    const modifyModal = new bootstrap.Modal(document.querySelector(".modifyModal"))
+
+    const replyHeader = document.querySelector(".replyHeader")
+    const modifyText = document.querySelector(".modifyText")
+    const modifyBtn = document.querySelector(".modifyBtn")
+    const removeBtn = document.querySelector(".removeBtn")
+    const closeModifyBtn = document.querySelector(".closeModifyBtn")
+
+    let hasAuth = false
+
+    function printList(dtoList) {
+        let str = '';
+
+        if (dtoList && dtoList.length > 0) {
+            for (const dto of dtoList) {
+                str += `<li class="list-group-item d-flex replyItem">` +
+                    `<span class="col-2">${i}</span>` +
+                    `<span class="col-6" data-rno="${dto.rno}">${dto.r_replyText}</span>` +
+                    `<span class="col-2">${dto.rreplyer}</span>` +
+                    `<span class="col-2">${dto.regDate}</span> ` +
+                    `</li>`
+                i++;
+            }
+        }
+        replyList.innerHTML = str;
+
+    }
+
+    //댓글 페이징 처리
+    function printPages(data) {
+        let pageStr = '';
+
+        if (data.prev) {
+            pageStr += `<li class="page-item"><a class="page-link" date-page="${data.start - 1}">PREV</a></li>`
+        }
+        for (let i = data.start; i <= data.end; i++) {
+            pageStr += `<li class="page-item ${i == data.page ? "active" : ""} "><a class="page-link" date-page="${i}">${i}</a></li>`
+        }
+        if (data.next) {
+            pageStr += `<li class="page-item"><a class="page-link" date-page="${data.end + 1}">NEXT</a></li>`
+        }
+        replyPaging.innerHTML = pageStr;
+    }
+
+    function printReplies(page, size, goLast) {
+        getList({no, page, size, goLast}).then(
+            data => {
+                printList(data.dtoList)
+                printPages(data)
+            }
+        ).catch(e => {
+            console.error(e);
+        })
+    }
+
+    printReplies(1, 10, true)
+
+    document.querySelector(".addReplyBtn").addEventListener("click", function (e) {
+        registerModal.show()
+    }, false)
+
+    closeRegisterBtn.addEventListener("click", function (e) {
+        registerModal.hide()
+    }, false)
+
+    registerBtn.addEventListener("click", function (e) {
+        const replyObj = {
+            no: no,
+            r_replyText: r_replyText.value,
+            rreplyer: rreplyer.value
+        }
+        console.log("replyObj.no : " + replyObj.no)
+        addReply(replyObj).then(result => {
+            alert(i + '번째 댓글 등록이 완료되었습니다')
+            registerModal.hide()
+            r_replyText.value = ''
+            rreplyer.value = ''
+            printReplies(1, 10, true)
+            location.reload();
+        }).catch(e => {
+            alert("오류 발생")
+        })
+    }, false)
+
+    //댓글 페이지 이동 처리
+    let page = 1;
+    let size = 10;
+
+    replyPaging.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const target = e.target;
+
+        if (!target || target.tagName != 'A') {
+            return
+        }
+        const pageNum = target.getAttribute("date-page")
+        page = pageNum;
+        printReplies(page, size)
+    }, false)
+
+    replyList.addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        if (!target || target.tagName != 'SPAN') {
+            return
+        }
+
+        const rno = target.getAttribute("data-rno")
+
+        if (!rno) {
+            return
+        }
+
+        console.log("rno : ", rno)
+
+        getReply(rno).then(reply => {
+            console.log(reply)
+            replyHeader.innerHTML = reply.rno
+            modifyText.value = reply.r_replyText
+
+            modifyModal.show()
+
+            hasAuth = currentUser === reply.rreplyer
+
+        }).catch(e => alert('^^ㅣ발 왜 안돼'))
+    }, false)
+
+    //댓글 수정
+    modifyBtn.addEventListener("click", function (e) {
+        if (!hasAuth) {
+            alert("댓글 작성자만 수정이 가능합니다.")
+            modifyModal.hide()
+            return
+        }
+
+        const replyObj = {
+            no: no,
+            rno: replyHeader.innerHTML,
+            r_replyText: modifyText.value
+        }
+        console.log("replyObj.no : "+ replyObj.no)
+        modifyReply(replyObj).then(result => {
+            alert(result.rno + '번 댓글이 수정되었습니다.')
+            r_replyText.value = ''
+            modifyModal.hide()
+            printReplies(page, size)
+            location.reload()
+        }).catch(e => {
+            console.log(e)
+        })
+    }, false)
+
+    removeBtn.addEventListener("click", function (e) {
+
+        if (!hasAuth) {
+            alert("댓글 작성자만 수정이 가능합니다.")
+            modifyModal.hide()
+            return
+        }
+
+        removeReply(replyHeader.innerHTML).then(result => {
+            alert(result.rno + '번의 댓글이 삭제되었습니다.')
+            r_replyText.value = ''
+            modifyModal.hide()
+
+            page = 1
+
+            printReplies(page, size)
+            location.reload()
+        }).catch(e => {
+            console.log(e)
+        })
+    }, false)
+
+    closeModifyBtn.addEventListener("click", function (e) {
+        modifyModal.hide()
+    })
+
+
+    /////// Playlist 모달
+    $(document).ready(function() {
+        var selectedOption = "default"
+        $("#defaultPlaylistOption").hide();
+        $("#existingPlaylistOption").hide();
+        $("#newPlaylistOption").hide();
+        $("#addToPlaylistOption").change(function() {
+            selectedOption = $(this).val();
+            if (selectedOption === "default") {
+                $("#defaultPlaylistOption").show();
+                $("#existingPlaylistOption").hide();
+                $("#newPlaylistOption").hide();
+            } else if (selectedOption === "new") {
+                $("#defaultPlaylistOption").hide();
+                $("#existingPlaylistOption").hide();
+                $("#newPlaylistOption").show();
+            } else if (selectedOption === "existing") {
+                $("#defaultPlaylistOption").hide();
+                $("#existingPlaylistOption").show();
+                $("#newPlaylistOption").hide();
+            }
+        });
+
+        // 새로운 플레이리스트에 담기 버튼 클릭 시
+        $("#addToNewPlaylistButton").click(function() {
+            var newPlaylistName = $("#newPlaylistName").val();
+            if (newPlaylistName) {
+                // 파라미터로 넘어온 음악 번호 가져오기
+                var no = [[${dto.no}]];
+
+                // AJAX 요청 보내기
+                $.ajax({
+                    type: "POST",
+                    url: "/playlist/addToNewPlaylist",
+                    data: {
+                        plName: newPlaylistName,
+                        no: no
+                    },
+                    success: function(response) {
+                        console.log("플레이리스트 생성 및 담기 성공:", response);
+                        $("#addToPlaylistModal").modal("hide");
+                        window.location.href = "/playlist"; // 리다이렉션
+                    },
+                    error: function(error) {
+                        console.error("플레이리스트 생성 및 담기 에러:", error);
+                    }
+                });
+            } else {
+                alert("플레이리스트 이름을 입력하세요.");
+            }
+        });
+
+    });
+
+
+</script>
+
+<div layout:fragment="content">
+
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+        <div class="bradcumbContent">
+            <p>Music Detail</p>
+            <h2>[[${dto.m_title}]]</h2>
+        </div>
+    </section>
+
+    <section class="featured-artist-area section-padding-100 bg-img bg-overlay bg-fixed"
+             style="background-image: url(img/bg-img/bg-4.jpg);">
+        <div class="container">
+            <div class="row align-items-end">
+                <div class="col-12 col-md-5 col-lg-4">
+                    <div class="featured-artist-thumb">
+                        <img th:src="${dto.m_image}">
+                    </div>
+                </div>
+                <div class="col-12 col-md-7 col-lg-8">
+                    <div class="featured-artist-content">
+                        <!-- Section Heading -->
+                        <div class="section-heading white text-left mb-30">
+                            <p>See Music Detail</p>
+                            <h2>PLAY THIS MUSIC</h2>
+                        </div>
+                        <div class="song-play-area">
+                            <div class="song-name">
+                                <p th:text="${dto.m_title}"></p>
+                            </div>
+                            <audio preload="auto" controls>
+                                <source th:src="${dto.m_sound}">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Single Music Info Start -->
+    <div class="single-blog-post mb-100 wow fadeInUp" data-wow-delay="100ms">
+        <!-- Post Thumb -->
+        <div class="blog-post-thumb mt-30">
+            <img style="width: 200px; padding: 0 0 0 30px" th:src="${dto.m_image}">
+
+            <!-- ##### PlayList : 버튼 클릭시 모달창 열림 ##### -->
+            <div class="row">
+                <button style="min-width: 180px; margin: 0 0 0 40px" type="button" class="btn oneMusic-btn mt-30" data-toggle="modal" data-target="#addToPlaylistModal">
+                    MyPlaylist 담기
+                </button>
+            </div>
+        </div>
+        <br>
+
+        <!-- Content -->
+        <div class="blog-content">
+            <!-- Post Excerpt -->
+            <h5>Title : [[${dto.m_title}]]</h5>
+            <h6>Artist : [[${dto.m_artist}]]</h6>
+            <br>
+            <p>PlayTime : [[${dto.m_playtime}]]</p>
+            <p>Release Date : [[${dto.rDate}]]</p>
+            <p>Views : [[${dto.mPlayCount}]]</p>
+        </div>
+    </div> <!-- Single Music Info End -->
+
+    <!-- 모달 창 -->
+    <div class="modal fade" id="addToPlaylistModal" tabindex="-1" role="dialog" aria-labelledby="addToPlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToPlaylistModalLabel">MyPlaylist 담기</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <select id="addToPlaylistOption" class="form-control">
+                        <option value="default" selected="selected"> 담을 플레이리스트 선택</option>
+                        <option value="existing"> ▶ 기존 플레이리스트에 음악담기</option>
+                        <option value="new"> ▶ 새로운 플레이리스트 생성 후 음악담기</option>
+                    </select>
+
+                    <!-- default 플레이리스트 선택 옵션 -->
+                    <div id="defaultPlaylistOption" class="mt-3">
+                        <h6></h6>
+                    </div>
+
+                    <!-- 기존 플레이리스트 선택 옵션 -->
+                    <div id="existingPlaylistOption" class="mt-3">
+                        <ul id="playlistList">
+                            <!-- 플레이리스트 아이템을 출력 -->
+                            <li th:each="playlist : ${playlists}">
+                                <a th:href="@{/playlist/addToExistPlaylist(plno=${playlist.plNo}, no=${dto.no})}">
+                                    <p>
+                                        <span th:text="${playlist.plName}"></span>
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 새로운 플레이리스트 생성 후 담기 옵션 -->
+                    <div id="newPlaylistOption" class="mt-3" style="display: none;">
+                        <h6>새로운 플레이리스트 생성 후 담기</h6>
+                        <input type="text" id="newPlaylistName" class="form-control" placeholder="새로운 플레이리스트 이름">
+                        <button id="addToNewPlaylistButton" class="btn btn-success mt-2">담기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- 모달 창 -->
+
+    <!-- reply start -->
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="my-4">
+                <button style="min-width: 180px; margin: 0 0 0 100px" class="btn oneMusic-btn mt-30 addReplyBtn">댓글 추가</button>
+            </div>
+            <ul style="width: 80%; margin: 0 0 0 100px" class="list-group replyList">
+            </ul>
+        </div>
+    </div>
+
+    <!--##### 댓글 페이징 처리 #####-->
+    <div class="row mt-3">
+        <div class="col">
+            <ul class="pagination replyPaging" style="margin: 0 0 0 880px">
+            </ul>
+        </div>
+    </div>
+
+    <!--##### 댓글 등록 처리 #####-->
+    <div class="modal registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">댓글 등록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Reply Text</span>
+                        <input type="text" class="form-control r_replyText">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Replyer</span>
+                        <input type="text" class="form-control rreplyer"
+                               th:value="${#authentication.principal.username}" readonly>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary registerBtn">Register</button>
+                        <button type="button" class="btn btn-outline-dark closeRegisterBtn">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--#####  ModifyModal Start  #####-->
+
+    <div class="modal modifyModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title replyHeader"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">ReplyText</span>
+                        <input type="text" class="form-control modifyText">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info modifyBtn">수정</button>
+                    <button type="button" class="btn btn-outline-danger removeBtn">삭제</button>
+                    <button type="button" class="btn btn-outline-dark closeModifyBtn">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--#####  ModifyModal End  #####-->
+
+    <!-- reply End -->
+
+
+    <script src="http://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="/js/reply.js"></script>
+
+</div>
+
+</body>
+</html>

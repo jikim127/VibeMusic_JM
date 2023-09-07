@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>One Music - Modern Music HTML5 Template</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+        <div class="bradcumbContent">
+            <p>See what’s new</p>
+            <h2>Latest Albums</h2>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <!-- ##### Album Catagory Area Start ##### -->
+    <section class="album-catagory section-padding-100-0">
+        <div class="container">
+
+            <!-- ##### SearchBar Area Start ###### -->
+            <div class="row mt-3" style="justify-content: center; margin: 0 0 50px 0">  <!-- 아주 깔끔해 좋아 -->
+                <form accept-charset="/albums-store" method="get">
+                    <div class="col">
+                        <input th:type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <select class="form-select" name="type">
+                                    <option value="">---</option>
+                                    <option value="t" th:selected="${pageRequestDTO.type == 't'}">제목</option>
+                                    <option value="a" th:selected="${pageRequestDTO.type == 'a'}">가수</option>
+                                    <option value="g" th:selected="${pageRequestDTO.type == 'g'}">장르</option>
+                                    <option value="ta" th:selected="${pageRequestDTO.type == 'tc'}">제목 / 가수</option>
+                                    <option value="tag" th:selected="${pageRequestDTO.type == 'tcw'}">제목 / 가수 / 장르
+                                    </option>
+                                </select>
+                            </div>
+                            <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
+                                <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row oneMusic-albums">
+                <!-- ##### SearchBar Area End ###### -->
+
+                <!-- Single Album -->
+                <!--                <tbody th: th:with="link=${pageRequestDTO.getLink()}">-->
+                <div class="col-12 col-sm-4 col-md-3 col-lg-2 single-album-item t c p"
+                     th:each="dto:${responseDTO.dtoList}"
+                     th:with="link=${pageRequestDTO.getLink()}">
+                    <div class="single-album">
+                        <a style="text-decoration: none" th:href="|@{/read(no=${dto.no})}&${link}|">
+                            <img th:src="${dto.m_image}">
+                        </a>
+                        <div class="album-info">
+                            <h5 th:text="${dto.m_title}"></h5>
+                            <p th:text="${dto.m_artist}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <form>
+        <ul class="pagination" style="margin: 0 0 100px 740px">
+            <li class="page-item" th:if="${responseDTO.prev}">
+                <a class="page-link" th:data-num="${responseDTO.start-1}">Previous</a>
+            </li>
+
+            <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <li th:class="${responseDTO.page == i}?'page-item active' : 'page-item'">
+                    <a th:class="page-link" th:data-num="${i}">[[${i}]]</a>
+                </li>
+            </th:block>
+
+            <li class="page-item" th:if="${responseDTO.next}">
+                <a class="page-link" th:data-num="${responseDTO.end+1}">Next</a>
+            </li>
+        </ul>
+    </form>
+    <!-- ##### Album Catagory Area End ##### -->
+
+    <!-- ##### Add Area Start ##### -->
+<!--    <div class="add-area mb-100">-->
+<!--        <div class="container">-->
+<!--            <div class="row">-->
+<!--                <div class="col-12">-->
+<!--                    <div class="adds">-->
+<!--                        <iframe width="560" height="315" src="https://www.youtube.com/embed/gdZLi9oWNZg?si=1NjOPG-rO&#45;&#45;avJN7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+    <!-- ##### Add Area End ##### -->
+
+
+<!-- ##### All Javascript Script ##### -->
+</body>
+
+<script layout:fragment="script" th:inline="javascript">
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const target = e.target;
+
+        if (target.tagName !== 'A') {
+            return
+        }
+
+        const num = target.getAttribute("data-num");
+        console.log(num);
+        const formObj = document.querySelector("form");
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+        formObj.submit();
+    }, false);
+
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        self.location = '/albums-store'
+
+    }, false)
+</script>
+</html>
+

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout.html}">
+
+<script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+<div class="elfsight-app-1133a280-e93c-4f1f-b875-ba78ffd67d62"></div>
+
+<body>
+<div layout:fragment="content">
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ##### Hero Area Start ##### -->
+    <section class="hero-area">
+        <div class="hero-slides owl-carousel">
+            <!-- Single Hero Slide -->
+            <div class="single-hero-slide d-flex align-items-center justify-content-center">
+                <!-- Slide Img -->
+                <div class="slide-img bg-img" style="background-image: url(img/bg-img/bg-1.jpg);"></div>
+                <!-- Slide Content -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="hero-slides-content text-center">
+                                <h6 data-animation="fadeInUp" data-delay="100ms">PLAY MUSIC</h6>
+                                <h2 data-animation="fadeInUp" data-delay="300ms">NEW JEANS<span>NEW JEANS</span></h2>
+                                <a data-animation="fadeInUp" data-delay="500ms" href="#newmusic"
+                                   class="btn oneMusic-btn mt-50">신곡 듣기 <i class="fa fa-angle-double-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Single Hero Slide -->
+            <div class="single-hero-slide d-flex align-items-center justify-content-center">
+                <!-- Slide Img -->
+                <div class="slide-img bg-img" style="background-image: url(img/bg-img/bg-2.jpg);"></div>
+                <!-- Slide Content -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="hero-slides-content text-center">
+                                <h6 data-animation="fadeInUp" data-delay="100ms">PLAY MUSIC</h6>
+                                <h2 data-animation="fadeInUp" data-delay="300ms">BTS<span>BTS</span></h2>
+                                <a data-animation="fadeInUp" data-delay="500ms" href="#newmusic"
+                                   class="btn oneMusic-btn mt-50">신곡
+                                    듣기 <i class="fa fa-angle-double-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Hero Area End ##### -->
+
+
+    <!-- ##### Buy Now Area Start ##### -->
+    <p id="newmusic"></p>
+    <section class="oneMusic-buy-now-area has-fluid bg-gray section-padding-100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading style-2">
+                        <p> 신 곡</p>
+                        <h2>What’s New</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Single Album Area -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2" th:each="dto:${responseDTO.dtoList}">
+                    <div class="single-album-area wow fadeInUp" data-wow-delay="100ms">
+                        <div class="album-thumb">
+                            <a style="text-decoration: none" th:href="|@{/read(no=${dto.no})}|">
+                                <img th:src="${dto.m_image}">
+                            </a>
+                        </div>
+                        <div class="album-info">
+                            <a th:href="|@{/read(no=${dto.no})}|">
+                                <h5 th:text="${dto.m_title}"></h5>
+                            </a>
+                            <p th:text="${dto.m_artist}"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="load-more-btn text-center wow fadeInUp" data-wow-delay="300ms">
+                        <!--                        <a href="#" class="btn oneMusic-btn"> 더 보기 <i class="fa fa-angle-double-right"></i></a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Buy Now Area End ##### -->
+    <section class="miscellaneous-area section-padding-100-0">
+        <div class="container">
+            <div class="row">
+                <!-- ***** Weeks Top ***** -->
+                <div class="col-12 col-lg-4">
+                    <div class="weeks-top-area mb-100">
+                        <div class="section-heading text-left mb-50 wow fadeInUp" data-wow-delay="50ms">
+                            <h2 th:text="${translatedMessage}"></h2>
+                        </div>
+
+                        <!-- Single Top Item -->
+                        <div class="single-top-item d-flex wow fadeInUp" data-wow-delay="100ms"
+                             th:each="music, musicStat : ${recommendedMusic}" th:if="${musicStat.index lt 10}">
+                            <div class="thumbnail">
+                                <img th:src="${music.m_image}" alt="">
+                            </div>
+                            <div class="content-">
+                                <a th:href="|@{/read(no=${music.no})}|">
+                                    <h6 th:text="${music.m_title}"></h6>
+                                </a>
+                                <p th:text="${music.m_artist}"></p>
+                            </div>
+                        </div>
+
+
+                        <!-- Single Top Item -->
+
+
+                    </div>
+                </div>
+
+                <!-- ***** New Hits Songs ***** -->
+                <div class="col-12 col-lg-4">
+                    <div class="new-hits-area mb-100">
+                        <div class="section-heading text-left mb-50 wow fadeInUp" data-wow-delay="50ms">
+                            <p></p>
+                            <div th:if="${WeatherMessage == '비'}">
+                                <h2>비오는날듣기좋은노래</h2>
+                            </div>
+                            <div th:if="${WeatherMessage == '흐림'}">
+                                <h2>흐린날듣기좋은노래</h2>
+                            </div>
+                            <div th:if="${WeatherMessage == '추움'}">
+                                <h2>추운날듣기좋은노래</h2>
+                            </div>
+                            <div th:if="${WeatherMessage == '습함'}">
+                                <h2>습한날듣기좋은노래</h2>
+                            </div>
+
+                        </div>
+
+                        <!-- Single Top Item -->
+                        <div class="single-new-item d-flex align-items-center justify-content-between wow fadeInUp"
+                             data-wow-delay="100ms"
+                             th:each="weatherMusic, weatherMusicStat : ${weatherMusic}"
+                             th:if="${weatherMusicStat.index lt 10}">
+                            <div class="first-part d-flex align-items-center">
+                                <div class="thumbnail">
+                                    <img th:src="${weatherMusic.m_image}" alt="">
+                                </div>
+                                <div class="content-">
+                                    <div class="content-">
+                                        <a th:href="|@{/read(no=${weatherMusic.no})}|">
+                                            <h6 th:text="${weatherMusic.m_title}"></h6>
+                                        </a>
+                                        <p th:text="${weatherMusic.m_artist}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                        <!-- Single Top Item -->
+
+
+                        <!-- ***** Popular Artists ***** -->
+                <div class="col-12 col-lg-4">
+                    <div class="popular-artists-area mb-100">
+                        <!-- Display remainingMusic when logged in -->
+                        <div th:if="${#authentication.principal != 'anonymousUser'}">
+                            <h6 th:text="${#authentication.principal.username}+'님에게 추천하는 노래 '" ></h6>
+                            <div class="single-artists d-flex align-items-center wow fadeInUp"
+                                 data-wow-delay="100ms"
+                                 th:each="remainingMusic, remainingMusicStat : ${remainingMusic}"
+                                 th:if="${remainingMusicStat.index lt 13}">
+                                <div class="thumbnail">
+                                    <img th:src="${remainingMusic.m_image}" alt="">
+                                </div>
+                                <div class="content-">
+                                    <div class="content-">
+                                        <a th:href="@{/read(no=${remainingMusic.no})}">
+                                            <h6 th:text="${remainingMusic.m_title}"></h6>
+                                        </a>
+                                        <p th:text="${remainingMusic.m_artist}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display randomGenreMusic when not logged in and index is less than 10 -->
+                        <div th:if="${#authentication.principal == 'anonymousUser'}">
+                            <h5 th:text="${timeBasedMessage}"></h5>
+                            <div class="single-artists d-flex align-items-center wow fadeInUp"
+                                 data-wow-delay="100ms"
+                                 th:each="randomGenreMusic, randomGenreMusicStat : ${randomGenreMusic}"
+                                th:if="${randomGenreMusicStat.index lt 13}">
+                                <div class="thumbnail">
+                                    <img th:src="${randomGenreMusic.m_image}" alt="">
+                                </div>
+                                <div class="content-">
+                                    <div class="content-">
+                                        <a th:href="@{/read(no=${randomGenreMusic.no})}">
+                                            <h6 th:text="${randomGenreMusic.m_title}"></h6>
+                                        </a>
+                                        <p th:text="${randomGenreMusic.m_artist}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Miscellaneous Area End ##### -->
+
+
+</div>
+</body>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>VibeMusic</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+
+
+</head>
+
+</html>
+
+<script>
+    // const auth = [[${#authentication}]]
+    const auth2 = [[${#authentication.principal}]]
+    // console.log(auth)
+    console.log(auth2)
+
+    function weather() {
+        JQuery.ajax({
+            url: "/api/weather",
+            type: "get",
+            timeout: 30000,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data, status, xhr) {
+                let dataHeader = data.result.response.header.resultCode;
+
+                if (dataHeader == "00") {
+                    console.log("success ==>");
+                    console.log(data);
+                } else {
+                    console.log("fail ==>");
+                    console.log(data);
+                }
+            },
+            error: function (e, status, xhr, data) {
+                console.log("error == >");
+                console.log(e);
+
+
+            }
+        });
+    }
+
+</script>

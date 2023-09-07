@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>VibeMusic - Login</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="breadcumb-area bg-img bg-overlay"
+             th:style="'background-image: url(' + @{/img/bg-img/breadcumb3.jpg} + ')'">
+        <div class="bradcumbContent">
+            <h2>VIBE MUSIC</h2>
+            <h3>Login Page</h3>
+        </div>
+    </section>
+
+    <section class="login-area section-padding-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8">
+                    <div class="login-content">
+                        <h3>WELCOME VIBE MUSIC PAGE</h3>
+                        <div class="login-form">
+                            <form id="registerForm" action="/member/login" method="post">
+                                <div class="form-group">
+                                    <label>ID</label>
+                                    <input type="text" name="username" class="form-control" placeholder="USER ID">
+                                </div>
+                                <div class="form-group">
+                                    <label>PASSWORD</label>
+                                    <input type="password" name="password" class="form-control" placeholder="PASSWORD">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-check-input" type="checkbox" name="remember-me">
+                                    <label class="form-check-label">
+                                        자동 로그인
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn oneMusic-btn submitBtn">LOGIN</button>
+                                <button type="button" class="btn oneMusic-buy-now-area joinBtn">REGISTER</button>
+                            </form>
+                            <br>
+                            <div>
+                                <a href="/oauth2/authorization/kakao">
+                                    <img th:src="@{/img/kakao_login.png}" style="height: 70px">
+                                </a>
+                                <br>
+                                <a href="/oauth2/authorization/google">
+                                    <img th:src="@{/img/google_logiin.png}" style="height: 70px">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    const error = [[${error}]]
+
+    console.log(error)
+    document.querySelector(".joinBtn").addEventListener("click", function (e){
+        e.preventDefault();
+        const formObj = document.querySelector("#registerForm")
+
+        formObj.action = `/member/join`
+        formObj.method = 'get'
+        formObj.submit()
+    }, false)
+</script>
+</html>

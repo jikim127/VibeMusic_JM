@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>VibeMusic - News</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <form action="/newsRead" method="get">
+
+
+        <!-- Preloader -->
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+
+        <!-- ##### Breadcumb Area Start ##### -->
+        <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+            <div class="bradcumbContent">
+                <p>See what’s new</p>
+                <h2> News</h2>
+            </div>
+        </section>
+        <!-- ##### Breadcumb Area End ##### -->
+
+        <!-- ##### Blog Area Start ##### -->
+        <div class="blog-area section-padding-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-9">
+
+                        <!-- Single Post Start -->
+                        <div th:each="dto:${newsPage}" class="single-blog-post mb-100 wow fadeInUp" data-wow-delay="100ms">
+                            <!-- Post Thumb -->
+                            <div class="blog-post-thumb mt-30">
+                                <a th:href="|@{newsRead(nNo=${dto.nNo})}|" method="get">
+                                    <img th:src="${dto.nImage}">
+                                </a>
+                                <!-- Post Date -->
+                                <div class="post-date">
+                                    <p>[[${dto.nRegDate}]]</p>
+                                </div>
+                            </div>
+
+                            <!-- Blog Content -->
+                            <div class="blog-content">
+                                <!-- Post Title -->
+                                <a th:href="|@{newsRead(nNo=${dto.nNo})}|" method="get" class="post-title">[[${dto.nTitle}]]</a>
+
+                                <!-- Post Meta -->
+                                <div class="post-meta d-flex mb-30">
+                                    <p class="tags">in Events</p>
+                                    <p class="tags">[[${dto.nViewCount}]] Views</p>
+                                    <p class="tags"><a th:href="|@{newsRead(nNo=${dto.nNo})}|" method="get">[[${dto.nViewCount}]] Comments</a></p>
+                                </div>
+                                <!-- Post Excerpt -->
+                                <p>[[${dto.nContent}]]</p>
+                            </div>
+                        </div> <!-- Single Post End -->
+
+                        <!-- Pagination Start-->
+                        <div th:if="${newsPage}" class="oneMusic-pagination-area wow fadeInUp" data-wow-delay="300ms">
+                            <nav>
+                                <ul class="news-pagination">
+                                    <li th:class="${newsPage.first ? 'disabled' : ''}" class="page-item active">
+                                        <a th:href="@{/blog(page=0, size=${newsPage.size})}">◀◀ First Page</a>
+                                    </li>
+                                    <li th:class="${newsPage.hasPrevious ? '' : 'disabled'}" class="page-item">
+                                        <a th:href="@{/blog(page=${newsPage.number - 1}, size=${newsPage.size})}">◀ Previous Page</a>
+                                    </li>
+                                    <li th:class="${newsPage.hasNext ? '' : 'disabled'}" class="page-item">
+                                        <a th:href="@{/blog(page=${newsPage.number + 1}, size=${newsPage.size})}">Next Page ▶</a>
+                                    </li>
+                                    <li th:class="${newsPage.last ? 'disabled' : ''}" class="page-item">
+                                        <a th:href="@{/blog(page=${newsPage.totalPages - 1}, size=${newsPage.size})}">Last Page ▶▶</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div> <!-- Pagination End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!-- ##### Blog Area End ##### -->
+    </form>
+</div>
+</body>
+
+</html>
